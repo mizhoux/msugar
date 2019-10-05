@@ -1,10 +1,6 @@
 package xyz.mizhoux.sugar;
 
-import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.function.Function;
-
 import static org.junit.Assert.assertEquals;
 
 /**
