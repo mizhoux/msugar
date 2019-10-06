@@ -33,7 +33,7 @@ public class Switch<T, R> {
      */
     private boolean met;
 
-    public Switch(T input) {
+    private Switch(T input) {
         this.input = input;
     }
 
