@@ -46,13 +46,7 @@ public class Switch<T, R> {
     }
 
     public Switch<T, R> is(T target) {
-        if (met) {
-            return this;
-        }
-
-        // 判断待检测目标是否和 target 相等
-        condition = Predicate.isEqual(target);
-        return this;
+        return when(Predicate.isEqual(target));
     }
 
     public Switch<T, R> when(Predicate<T> condition) {
@@ -129,6 +123,32 @@ public class Switch<T, R> {
             met = true;
         }
 
+        return this;
+    }
+
+    public Switch<T, R> or(T target) {
+        return or(Predicate.isEqual(target));
+    }
+
+    public Switch<T, R> or(Predicate<T> other) {
+        if (met) {
+            return this;
+        }
+
+        requireNonNullCondition();
+
+        condition = condition.or(other);
+        return this;
+    }
+
+    public Switch<T, R> and(Predicate<T> other) {
+        if (met) {
+            return this;
+        }
+
+        requireNonNullCondition();
+
+        condition = condition.and(other);
         return this;
     }
 

@@ -1,6 +1,7 @@
 package xyz.mizhoux.sugar;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -32,6 +33,29 @@ public class SwitchTest {
         assertEquals("one", transform(1));
         assertEquals("two", transform(2));
         assertEquals("many", transform(3));
+    }
+
+    @Test
+    public void testLogic() {
+        assertEquals(0, getStringType(null));
+        assertEquals(0, getStringType(""));
+        assertEquals(0, getStringType("  "));
+        assertEquals(1, getStringType("null"));
+        assertEquals(1, getStringType("empty"));
+        assertEquals(1, getStringType("blank"));
+        assertEquals(1, getStringType("..."));
+        assertEquals(2, getStringType("^$"));
+        assertEquals(2, getStringType("^abc$"));
+        assertEquals(3, getStringType("^abc"));
+        assertEquals(3, getStringType("abc$"));
+    }
+
+    private int getStringType(String value) {
+        return Switch.on(value, Integer.class)
+                .is(null).or(s -> s.trim().isEmpty()).thenGet(0)
+                .is("null").or("empty").or("blank").or("...").thenGet(1)
+                .when(s -> s.startsWith("^")).and(s -> s.endsWith("$")).thenGet(2)
+                .elseGet(3);
     }
 
     private long parseLong(Object input) {
