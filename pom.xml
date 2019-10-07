@@ -6,10 +6,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>xyz.mizhoux</groupId>
-    <artifactId>me-sugar</artifactId>
-    <version>0.1</version>
+    <artifactId>msugar</artifactId>
+    <version>0.2</version>
 
-    <name>me-sugar</name>
+    <name>msugar</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
