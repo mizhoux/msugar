@@ -2,18 +2,20 @@ package xyz.mizhoux.sugar;
 
 import xyz.mizhoux.sugar.function.CheckedConsumer;
 import xyz.mizhoux.sugar.function.CheckedFunction;
+import xyz.mizhoux.sugar.function.CheckedSupplier;
 
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
- * Tries
+ * TryTo
  *
  * @author 之叶
  * @date   2019/10/06
  */
-public interface Tries {
+public interface TryTo {
 
     static <T, R> Function<T, R> apply(CheckedFunction<T, R> function) {
         Objects.requireNonNull(function);
@@ -61,6 +63,30 @@ public interface Tries {
                 consumer.accept(t);
             } catch (Throwable e) {
                 handler.accept(e);
+            }
+        };
+    }
+
+    static <R> Supplier<R> supply(CheckedSupplier<R> supplier) {
+        Objects.requireNonNull(supplier);
+
+        return () -> {
+            try {
+                return supplier.supply();
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
+
+    static <R> Supplier<R> supply(CheckedSupplier<R> supplier, Function<Throwable, R> handler) {
+        Objects.requireNonNull(supplier);
+
+        return () -> {
+            try {
+                return supplier.supply();
+            } catch (Throwable e) {
+                return handler.apply(e);
             }
         };
     }
