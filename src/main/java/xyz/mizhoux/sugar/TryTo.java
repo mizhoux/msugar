@@ -81,6 +81,7 @@ public interface TryTo {
 
     static <R> Supplier<R> supply(CheckedSupplier<R> supplier, Function<Throwable, R> handler) {
         Objects.requireNonNull(supplier);
+        Objects.requireNonNull(handler);
 
         return () -> {
             try {
