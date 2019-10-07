@@ -37,20 +37,41 @@ public class SwitchTest {
 
     @Test
     public void testLogic() {
-        assertEquals(0, getStringType(null));
-        assertEquals(0, getStringType(""));
-        assertEquals(0, getStringType("  "));
-        assertEquals(1, getStringType("null"));
-        assertEquals(1, getStringType("empty"));
-        assertEquals(1, getStringType("blank"));
-        assertEquals(1, getStringType("..."));
-        assertEquals(2, getStringType("^$"));
-        assertEquals(2, getStringType("^abc$"));
-        assertEquals(3, getStringType("^abc"));
-        assertEquals(3, getStringType("abc$"));
+        assertEquals(0, getStringType1(null));
+        assertEquals(0, getStringType1(""));
+        assertEquals(0, getStringType1("  "));
+        assertEquals(1, getStringType1("null"));
+        assertEquals(1, getStringType1("empty"));
+        assertEquals(1, getStringType1("blank"));
+        assertEquals(1, getStringType1("..."));
+        assertEquals(2, getStringType1("^$"));
+        assertEquals(2, getStringType1("^abc$"));
+        assertEquals(3, getStringType1("^abc"));
+        assertEquals(3, getStringType1("abc$"));
     }
 
-    private int getStringType(String value) {
+    @Test
+    public void testIn() {
+        assertEquals(0, getStringType2(null));
+        assertEquals(0, getStringType2(""));
+        assertEquals(1, getStringType2("null"));
+        assertEquals(1, getStringType2("empty"));
+        assertEquals(1, getStringType2("blank"));
+        assertEquals(1, getStringType2("..."));
+        assertEquals(2, getStringType2("^$"));
+        assertEquals(2, getStringType2("^abc$"));
+        assertEquals(2, getStringType2("^abc"));
+        assertEquals(2, getStringType2("abc$"));
+    }
+
+    private int getStringType2(String value) {
+        return Switch.on(value, Integer.class)
+                .in(null, "").thenGet(0)
+                .in("null", "empty", "blank", "...").thenGet(1)
+                .elseGet(2);
+    }
+
+    private int getStringType1(String value) {
         return Switch.on(value, Integer.class)
                 .is(null).or(s -> s.trim().isEmpty()).thenGet(0)
                 .is("null").or("empty").or("blank").or("...").thenGet(1)

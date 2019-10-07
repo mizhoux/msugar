@@ -58,13 +58,28 @@ public class Switch<T, R> {
         return this;
     }
 
+    public Switch<T, R> in(T... values) {
+        Objects.requireNonNull(values);
+
+        condition = e -> {
+            for (T v : values) {
+                if (Objects.equals(e, v)) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
+        return this;
+    }
+
     public Switch<T, R> thenAccept(Consumer<T> action) {
         if (met) {
             return this;
         }
 
-        Objects.requireNonNull(action);
-        requireNonNullCondition();
+        requireNonNullArgAndCondition(action);
 
         if (condition.test(input)) {
             action.accept(input);
@@ -113,8 +128,7 @@ public class Switch<T, R> {
             return this;
         }
 
-        Objects.requireNonNull(mapper);
-        requireNonNullCondition();
+        requireNonNullArgAndCondition(mapper);
 
         if (condition.test(input)) {
             output = mapper.apply(input);
@@ -135,8 +149,7 @@ public class Switch<T, R> {
             return this;
         }
 
-        requireNonNullCondition();
-
+        requireNonNullArgAndCondition(other);
         condition = condition.or(other);
         return this;
     }
@@ -146,8 +159,7 @@ public class Switch<T, R> {
             return this;
         }
 
-        requireNonNullCondition();
-
+        requireNonNullArgAndCondition(other);
         condition = condition.and(other);
         return this;
     }
@@ -156,6 +168,11 @@ public class Switch<T, R> {
         if (condition == null) {
             throw new IllegalStateException("A condition must be set first.");
         }
+    }
+
+    private void requireNonNullArgAndCondition(Object arg) {
+        Objects.requireNonNull(arg);
+        requireNonNullCondition();
     }
 
 }
