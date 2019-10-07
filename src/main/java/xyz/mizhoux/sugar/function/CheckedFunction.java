@@ -1,14 +1,14 @@
 package xyz.mizhoux.sugar.function;
 
 /**
- * UncheckedFunction
+ * CheckedFunction
  *
  * @author 之叶
  * @date   2019/10/06
  */
 @FunctionalInterface
-public interface UncheckedFunction<T, R> {
+public interface CheckedFunction<T, R> {
 
-    R apply(T input) throws Exception;
+    R apply(T input) throws Throwable;
 
 }
