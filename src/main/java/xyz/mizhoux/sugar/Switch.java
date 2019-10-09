@@ -38,18 +38,48 @@ public class Switch<T, R> {
         this.input = input;
     }
 
+    /**
+     * 在指定的输入上使用 Switch，返回用于消费的 Switch 实例
+     *
+     * @param input 指定的输入
+     * @param <T> 输入类型
+     * @param <R> 输出类型
+     * @return 用于消费的 Switch 实例
+     */
     public static <T, R> Switch<T, R> on(T input) {
         return new Switch<>(input);
     }
 
+    /**
+     * 在指定的输入上使用 Switch，返回用于求值的 Switch 实例
+     *
+     * @param input 指定的输入
+     * @param outType 所求值的 Class
+     * @param <T> 输入类型
+     * @param <R> 输出类型
+     * @return 用于求值的 Switch 实例
+     */
     public static <T, R> Switch<T, R> on(T input, Class<R> outType) {
         return new Switch<>(input);
     }
 
+    /**
+     * 判断输入是否和给定的目标相等
+     *
+     * @param target 给定的目标
+     * @return 当前 Switch 实例
+     */
     public Switch<T, R> is(T target) {
+        // 判断输入是否和 target 相等
         return when(Predicate.isEqual(target));
     }
 
+    /**
+     * 判断输入是否存在给定的一群值中
+     *
+     * @param values 给定的一群值
+     * @return 当前 Switch 实例
+     */
     public Switch<T, R> in(T... values) {
         Objects.requireNonNull(values);
 
@@ -64,6 +94,12 @@ public class Switch<T, R> {
         });
     }
 
+    /**
+     * 设定输入需要满足的条件
+     *
+     * @param condition 输入需要满足的条件
+     * @return 当前 Switch 实例
+     */
     public Switch<T, R> when(Predicate<T> condition) {
         if (met) { return this; }
 
@@ -71,6 +107,12 @@ public class Switch<T, R> {
         return this;
     }
 
+    /**
+     * 满足某个条件时，对输入进行消费操作
+     *
+     * @param action 消费动作
+     * @return 当前 Switch 实例
+     */
     public Switch<T, R> thenAccept(Consumer<T> action) {
         if (met) { return this; }
 
@@ -86,6 +128,11 @@ public class Switch<T, R> {
         return this;
     }
 
+    /**
+     * 不满足任一条件时，对输入进行消费操作
+     *
+     * @param action 消费动作
+     */
     public void elseAccept(Consumer<T> action) {
         if (met) { return; }
 
@@ -94,6 +141,12 @@ public class Switch<T, R> {
         action.accept(input);
     }
 
+    /**
+     * 满足某个条件时，进行求值操作
+     *
+     * @param value 指定的输出值
+     * @return 当前 Switch 实例
+     */
     public Switch<T, R> thenGet(R value) {
         if (met) { return this; }
 
@@ -110,10 +163,22 @@ public class Switch<T, R> {
         return this;
     }
 
+    /**
+     * 不满足任一条件时，进行求值操作
+     *
+     * @param value 指定的输出值
+     * @return 如果某个条件被满足，则返回满足条件时所求的值；否则返回指定的输出值
+     */
     public R elseGet(R value) {
         return met ? output : value;
     }
 
+    /**
+     * 满足某个条件时，使用 Function 进行求值操作，当前 Switch 实例的输入会作为 Function 的输入
+     *
+     * @param mapper 指定的 Function
+     * @return 当前 Switch 实例
+     */
     public Switch<T, R> thenApply(Function<T, R> mapper) {
         if (met) { return this; }
 
@@ -129,12 +194,24 @@ public class Switch<T, R> {
         return this;
     }
 
+    /**
+     * 不满足任一条件时，使用 Function 进行求值操作，当前 Switch 实例的输入会作为 Function 的输入
+     *
+     * @param mapper 指定的 Function
+     * @return 如果某个条件被满足，则返回满足条件时所求的值；否则返回指定的 Function 产生的输出值
+     */
     public R elseApply(Function<T, R> mapper) {
         Objects.requireNonNull(mapper);
 
         return met ? output : mapper.apply(input);
     }
 
+    /**
+     * 满足某个条件时，使用 Supplier 进行求值操作
+     *
+     * @param supplier 指定的 Supplier
+     * @return 当前 Switch 实例
+     */
     public Switch<T, R> thenSupply(Supplier<R> supplier) {
         if (met) { return this; }
 
@@ -150,6 +227,12 @@ public class Switch<T, R> {
         return this;
     }
 
+    /**
+     * 不满足任一条件时，使用 Supplier 进行求值操作
+     *
+     * @param supplier 指定的 Supplier
+     * @return 如果某个条件被满足，则返回满足条件时所求的值；否则返回指定的 Supplier 产生的输出值
+     */
     public R elseSupply(Supplier<R> supplier) {
         Objects.requireNonNull(supplier);
 
