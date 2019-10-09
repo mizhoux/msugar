@@ -57,7 +57,7 @@ public class SwitchTest {
         assertEquals(1, getStringType2("null"));
         assertEquals(1, getStringType2("empty"));
         assertEquals(1, getStringType2("blank"));
-        assertEquals(1, getStringType2("..."));
+        assertEquals(0, getStringType2(""));
         assertEquals(2, getStringType2("^$"));
         assertEquals(2, getStringType2("^abc$"));
         assertEquals(2, getStringType2("^abc"));
@@ -67,7 +67,7 @@ public class SwitchTest {
     private int getStringType2(String value) {
         return Switch.on(value, Integer.class)
                 .in(null, "").thenGet(0)
-                .in("null", "empty", "blank", "...").thenGet(1)
+                .in("null", "empty", "blank", "").thenGet(1)
                 .elseGet(2);
     }
 

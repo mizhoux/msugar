@@ -1,5 +1,6 @@
 package xyz.mizhoux.sugar;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -49,28 +50,14 @@ public class Switch<T, R> {
         return when(Predicate.isEqual(target));
     }
 
+    public Switch<T, R> in(T... values) {
+        return when(e -> Arrays.asList(values).contains(e));
+    }
+
     public Switch<T, R> when(Predicate<T> condition) {
         if (met) { return this; }
 
         this.condition = Objects.requireNonNull(condition);
-        return this;
-    }
-
-    public Switch<T, R> in(T... values) {
-        if (met) { return this; }
-
-        Objects.requireNonNull(values);
-        condition = e -> {
-            for (T v : values) {
-                if (Objects.equals(e, v)) {
-                    met = true;
-                    return true;
-                }
-            }
-
-            return false;
-        };
-
         return this;
     }
 
