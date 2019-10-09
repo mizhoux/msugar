@@ -64,6 +64,18 @@ public class Switch<T, R> {
     }
 
     /**
+     * 设定当前 Switch 的输出值的类型
+     *
+     * @param outType 输出值的类型
+     * @param <V> 输出值的类型
+     * @return 当前的 Switch 实例
+     */
+    @SuppressWarnings("unchecked")
+    public <V> Switch<T, V> output(Class<V> outType) {
+        return (Switch<T, V>) this;
+    }
+
+    /**
      * 判断输入是否和给定的目标相等
      *
      * @param target 给定的目标
