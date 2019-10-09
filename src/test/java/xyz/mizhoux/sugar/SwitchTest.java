@@ -36,52 +36,29 @@ public class SwitchTest {
     }
 
     @Test
-    public void testLogic() {
-        assertEquals(0, getStringType1(null));
-        assertEquals(0, getStringType1(""));
-        assertEquals(0, getStringType1("  "));
-        assertEquals(1, getStringType1("null"));
-        assertEquals(1, getStringType1("empty"));
-        assertEquals(1, getStringType1("blank"));
-        assertEquals(1, getStringType1("..."));
-        assertEquals(2, getStringType1("^$"));
-        assertEquals(2, getStringType1("^abc$"));
-        assertEquals(3, getStringType1("^abc"));
-        assertEquals(3, getStringType1("abc$"));
-    }
-
-    @Test
     public void testIn() {
-        assertEquals(0, getStringType2(null));
-        assertEquals(0, getStringType2(""));
-        assertEquals(1, getStringType2("null"));
-        assertEquals(1, getStringType2("empty"));
-        assertEquals(1, getStringType2("blank"));
-        assertEquals(0, getStringType2(""));
-        assertEquals(2, getStringType2("^$"));
-        assertEquals(2, getStringType2("^abc$"));
-        assertEquals(2, getStringType2("^abc"));
-        assertEquals(2, getStringType2("abc$"));
+        assertEquals(0, getStringType(null));
+        assertEquals(0, getStringType(""));
+
+        assertEquals(1, getStringType("null"));
+        assertEquals(1, getStringType("empty"));
+        assertEquals(1, getStringType("blank"));
+
+        assertEquals(2, getStringType("^$"));
+        assertEquals(2, getStringType("abc"));
     }
 
-    private int getStringType2(String value) {
+    private int getStringType(String value) {
         return Switch.on(value, Integer.class)
                 .in(null, "").thenGet(0)
-                .in("null", "empty", "blank", "").thenGet(1)
+                .in(null, "", "null", "empty", "blank").thenGet(1)
                 .elseGet(2);
-    }
-
-    private int getStringType1(String value) {
-        return Switch.on(value, Integer.class)
-                .is(null).or(s -> s.trim().isEmpty()).thenGet(0)
-                .is("null").or("empty").or("blank").or("...").thenGet(1)
-                .when(s -> s.startsWith("^")).and(s -> s.endsWith("$")).thenGet(2)
-                .elseGet(3);
     }
 
     private long parseLong(Object input) {
         return Switch.on(input, Long.class)
-                .is(null).thenGet(-1L)
+                .is(null)
+                .thenGet(-1L)
                 .when(Long.class::isInstance)
                 .thenApply(v -> Long.class.cast(v))
                 .when(String.class::isInstance)

@@ -55,7 +55,7 @@ public class Switch<T, R> {
 
         return when(e -> {
             for (T value : values) {
-                if (Objects.equals(input, value)) {
+                if (Objects.equals(e, value)) {
                     return true;
                 }
             }
