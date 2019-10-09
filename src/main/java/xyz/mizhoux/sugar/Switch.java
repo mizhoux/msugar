@@ -50,20 +50,20 @@ public class Switch<T, R> {
     }
 
     public Switch<T, R> when(Predicate<T> condition) {
-        if (met) {
-            return this;
-        }
+        if (met) { return this; }
 
         this.condition = Objects.requireNonNull(condition);
         return this;
     }
 
     public Switch<T, R> in(T... values) {
-        Objects.requireNonNull(values);
+        if (met) { return this; }
 
+        Objects.requireNonNull(values);
         condition = e -> {
             for (T v : values) {
                 if (Objects.equals(e, v)) {
+                    met = true;
                     return true;
                 }
             }
@@ -75,9 +75,7 @@ public class Switch<T, R> {
     }
 
     public Switch<T, R> thenAccept(Consumer<T> action) {
-        if (met) {
-            return this;
-        }
+        if (met) { return this; }
 
         requireNonNullArgAndCondition(action);
 
@@ -92,9 +90,7 @@ public class Switch<T, R> {
     }
 
     public void elseAccept(Consumer<T> action) {
-        if (met) {
-            return;
-        }
+        if (met) { return; }
 
         Objects.requireNonNull(action);
         // 之前没有任何一个条件被满足
@@ -102,9 +98,7 @@ public class Switch<T, R> {
     }
 
     public Switch<T, R> thenGet(R value) {
-        if (met) {
-            return this;
-        }
+        if (met) { return this; }
 
         requireNonNullCondition();
 
@@ -124,9 +118,7 @@ public class Switch<T, R> {
     }
 
     public Switch<T, R> thenApply(Function<T, R> mapper) {
-        if (met) {
-            return this;
-        }
+        if (met) { return this; }
 
         requireNonNullArgAndCondition(mapper);
 
@@ -145,9 +137,7 @@ public class Switch<T, R> {
     }
 
     public Switch<T, R> or(Predicate<T> other) {
-        if (met) {
-            return this;
-        }
+        if (met) { return this; }
 
         requireNonNullArgAndCondition(other);
         condition = condition.or(other);
@@ -155,9 +145,7 @@ public class Switch<T, R> {
     }
 
     public Switch<T, R> and(Predicate<T> other) {
-        if (met) {
-            return this;
-        }
+        if (met) { return this; }
 
         requireNonNullArgAndCondition(other);
         condition = condition.and(other);
