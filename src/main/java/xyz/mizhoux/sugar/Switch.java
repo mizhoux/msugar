@@ -51,19 +51,6 @@ public class Switch<T, R> {
     }
 
     /**
-     * 在指定的输入上使用 Switch，返回用于求值的 Switch 实例
-     *
-     * @param input   指定的输入
-     * @param outType 所求值的 Class
-     * @param <T>     输入类型
-     * @param <R>     输出类型
-     * @return 用于求值的 Switch 实例
-     */
-    public static <T, R> Switch<T, R> on(T input, Class<? extends R> outType) {
-        return new Switch<>(input);
-    }
-
-    /**
      * 设定当前 Switch 的输出值的类型
      *
      * @param outType 输出值的类型

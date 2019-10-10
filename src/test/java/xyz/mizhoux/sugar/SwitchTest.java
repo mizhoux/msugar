@@ -49,14 +49,16 @@ public class SwitchTest {
     }
 
     private int getStringType(String value) {
-        return Switch.on(value, Integer.class)
+        return Switch.on(value)
+                .out(Integer.class)
                 .in(null, "").thenGet(0)
                 .in(null, "", "null", "empty", "blank").thenGet(1)
                 .elseGet(2);
     }
 
     private long parseLong(Object input) {
-        return Switch.on(input, Long.class)
+        return Switch.on(input)
+                .out(Long.class)
                 .is(null)
                 .thenGet(-1L)
                 .when(Long.class::isInstance)
@@ -67,7 +69,8 @@ public class SwitchTest {
     }
 
     private String transform(int i) {
-        return Switch.on(i, String.class)
+        return Switch.on(i)
+                .out(String.class)
                 .is(0).thenGet("zero")
                 .is(1).thenGet("one")
                 .is(2).thenGet("two")
