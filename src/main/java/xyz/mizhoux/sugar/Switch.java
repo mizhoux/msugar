@@ -42,8 +42,8 @@ public class Switch<T, R> {
      * 在指定的输入上使用 Switch，返回用于消费的 Switch 实例
      *
      * @param input 指定的输入
-     * @param <T> 输入类型
-     * @param <R> 输出类型
+     * @param <T>   输入类型
+     * @param <R>   输出类型
      * @return 用于消费的 Switch 实例
      */
     public static <T, R> Switch<T, R> on(T input) {
@@ -53,13 +53,13 @@ public class Switch<T, R> {
     /**
      * 在指定的输入上使用 Switch，返回用于求值的 Switch 实例
      *
-     * @param input 指定的输入
+     * @param input   指定的输入
      * @param outType 所求值的 Class
-     * @param <T> 输入类型
-     * @param <R> 输出类型
+     * @param <T>     输入类型
+     * @param <R>     输出类型
      * @return 用于求值的 Switch 实例
      */
-    public static <T, R> Switch<T, R> on(T input, Class<R> outType) {
+    public static <T, R> Switch<T, R> on(T input, Class<? extends R> outType) {
         return new Switch<>(input);
     }
 
@@ -67,11 +67,11 @@ public class Switch<T, R> {
      * 设定当前 Switch 的输出值的类型
      *
      * @param outType 输出值的类型
-     * @param <V> 输出值的类型
+     * @param <V>     输出值的类型
      * @return 当前的 Switch 实例
      */
     @SuppressWarnings("unchecked")
-    public <V> Switch<T, V> output(Class<V> outType) {
+    public <V> Switch<T, V> out(Class<? extends V> outType) {
         return (Switch<T, V>) this;
     }
 
@@ -92,7 +92,8 @@ public class Switch<T, R> {
      * @param values 给定的一群值
      * @return 当前 Switch 实例
      */
-    public Switch<T, R> in(T... values) {
+    @SafeVarargs
+    public final Switch<T, R> in(T... values) {
         Objects.requireNonNull(values);
 
         return when(e -> {
