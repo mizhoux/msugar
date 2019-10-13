@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * @author 之叶
  * @date 2019/10/05
  */
-public abstract class Switch<T> {
+public class Switch<T> {
 
     /**
      * 输入值
@@ -30,7 +30,7 @@ public abstract class Switch<T> {
      */
     boolean met;
 
-    Switch(T input) {
+    private Switch(T input) {
         this.input = input;
     }
 
