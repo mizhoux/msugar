@@ -1,13 +1,9 @@
 package xyz.mizhoux.sugar;
 
-import xyz.mizhoux.sugar.function.CheckedConsumer;
-import xyz.mizhoux.sugar.function.CheckedFunction;
-import xyz.mizhoux.sugar.function.CheckedSupplier;
+import xyz.mizhoux.sugar.function.*;
 
 import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 /**
  * 包装受检函数为非受检函数
@@ -60,6 +56,50 @@ public interface Attempt {
     }
 
     /**
+     * 包装受检的 BiFunction
+     *
+     * @param function 受检的 BiFunction
+     * @param <T>
+     * @param <U>
+     * @param <R>
+     * @return 非受检的 BiFunction
+     */
+    static <T, U, R> BiFunction<T, U, R> apply(CheckedBiFunction<T, U, R> function) {
+        Objects.requireNonNull(function);
+
+        return (t, u) -> {
+            try {
+                return function.apply(t, u);
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
+
+    /**
+     * 包装受检的 BiFunction，并自定义异常处理
+     *
+     * @param function 受检的 BiFunction
+     * @param handler  自定义异常处理
+     * @param <T>
+     * @param <U>
+     * @param <R>
+     * @return 非受检的 BiFunction
+     */
+    static <T, U, R> BiFunction<T, U, R> apply(CheckedBiFunction<T, U, R> function, Function<Throwable, R> handler) {
+        Objects.requireNonNull(function);
+        Objects.requireNonNull(handler);
+
+        return (t, u) -> {
+            try {
+                return function.apply(t, u);
+            } catch (Throwable e) {
+                return handler.apply(e);
+            }
+        };
+    }
+
+    /**
      * 包装受检的 Consumer
      *
      * @param consumer 受检的 Consumer
@@ -93,6 +133,48 @@ public interface Attempt {
         return t -> {
             try {
                 consumer.accept(t);
+            } catch (Throwable e) {
+                handler.accept(e);
+            }
+        };
+    }
+
+    /**
+     * 包装受检的 BiConsumer
+     *
+     * @param biConsumer 受检的 BiConsumer
+     * @param <T>
+     * @param <U>
+     * @return 非受检的 BiConsumer
+     */
+    static <T, U> BiConsumer<T, U> accept(CheckedBiConsumer<T, U> biConsumer) {
+        Objects.requireNonNull(biConsumer);
+
+        return (t, u) -> {
+            try {
+                biConsumer.accept(t, u);
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
+
+    /**
+     * 包装受检的 BiConsumer，并自定义异常处理
+     *
+     * @param biConsumer 受检的 BiConsumer
+     * @param handler    自定义异常处理
+     * @param <T>
+     * @param <U>
+     * @return 非受检的 BiConsumer
+     */
+    static <T, U> BiConsumer<T, U> accept(CheckedBiConsumer<T, U> biConsumer, Consumer<Throwable> handler) {
+        Objects.requireNonNull(biConsumer);
+        Objects.requireNonNull(handler);
+
+        return (t, u) -> {
+            try {
+                biConsumer.accept(t, u);
             } catch (Throwable e) {
                 handler.accept(e);
             }
