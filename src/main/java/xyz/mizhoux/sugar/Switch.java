@@ -127,18 +127,21 @@ public abstract class Switch<T> {
 
         @Override
         public ConsumptionSwitch<T> is(T target) {
-            return (ConsumptionSwitch<T>) super.is(target);
+            super.is(target);
+            return this;
         }
 
         @Override
         @SafeVarargs
         public final ConsumptionSwitch<T> in(T... values) {
-            return (ConsumptionSwitch<T>) super.in(values);
+            super.in(values);
+            return this;
         }
 
         @Override
         public ConsumptionSwitch<T> when(Predicate<T> condition) {
-            return (ConsumptionSwitch<T>) super.when(condition);
+            super.when(condition);
+            return this;
         }
 
         /**
@@ -194,18 +197,21 @@ public abstract class Switch<T> {
 
         @Override
         public EvaluationSwitch<I, O> is(I target) {
-            return (EvaluationSwitch<I, O>) super.is(target);
+            super.is(target);
+            return this;
         }
 
         @Override
         @SafeVarargs
         public final EvaluationSwitch<I, O> in(I... values) {
-            return (EvaluationSwitch<I, O>) super.in(values);
+            super.in(values);
+            return this;
         }
 
         @Override
         public EvaluationSwitch<I, O> when(Predicate<I> condition) {
-            return (EvaluationSwitch<I, O>) super.when(condition);
+            super.when(condition);
+            return this;
         }
 
         /**
