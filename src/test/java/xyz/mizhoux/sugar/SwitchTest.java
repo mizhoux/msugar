@@ -2,7 +2,7 @@ package xyz.mizhoux.sugar;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * SwitchTest
@@ -56,6 +56,12 @@ public class SwitchTest {
 
         assertEquals(2, getStringType("^$"));
         assertEquals(2, getStringType("abc"));
+    }
+
+    @Test
+    public void testObtain() {
+        assertFalse(Switch.input(null).obtain().isPresent());
+        assertTrue(Switch.input(null).is(null).thenGet("").obtain().isPresent());
     }
 
     private int getStringType(String value) {

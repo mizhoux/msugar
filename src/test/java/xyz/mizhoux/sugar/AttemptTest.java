@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 import static org.junit.Assert.*;
 
 /**
- * TryTest
+ * AttemptTest
  *
  * @author 之叶
  * @date   2019/10/07

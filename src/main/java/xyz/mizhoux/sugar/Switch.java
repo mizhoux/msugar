@@ -11,7 +11,7 @@ import java.util.function.Supplier;
  * Switch
  *
  * @author 之叶
- * @date 2019/10/05
+ * @date   2019/10/05
  */
 public class Switch<T> {
 

@@ -10,7 +10,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Try
+ * 保证受检函数为非受检函数
  *
  * @author 之叶
  * @date   2019/10/06
