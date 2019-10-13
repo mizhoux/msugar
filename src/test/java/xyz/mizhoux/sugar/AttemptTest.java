@@ -9,16 +9,16 @@ import java.util.function.Supplier;
 import static org.junit.Assert.*;
 
 /**
- * TryToTest
+ * TryTest
  *
  * @author 之叶
  * @date   2019/10/07
  */
-public class TryToTest {
+public class AttemptTest {
 
     @Test(expected = RuntimeException.class)
     public void testAccept() {
-        Consumer<Object> action = TryTo.accept(this::throwableAccept);
+        Consumer<Object> action = Attempt.accept(this::throwableAccept);
         assertNotNull(action);
 
         action.accept("");
@@ -26,7 +26,7 @@ public class TryToTest {
 
     @Test
     public void testAcceptWithHandler() {
-        Consumer<Object> action = TryTo.accept(this::throwableAccept, ex -> {});
+        Consumer<Object> action = Attempt.accept(this::throwableAccept, ex -> {});
         assertNotNull(action);
 
         action.accept("");
@@ -34,7 +34,7 @@ public class TryToTest {
 
     @Test(expected = RuntimeException.class)
     public void testApply() {
-        Function<Object, Object> mapper = TryTo.apply(this::throwableApply);
+        Function<Object, Object> mapper = Attempt.apply(this::throwableApply);
         assertNotNull(mapper);
 
         mapper.apply("");
@@ -42,7 +42,7 @@ public class TryToTest {
 
     @Test
     public void testApplyWithHandler() {
-        Function<Object, Integer> mapper = TryTo.apply(this::throwableApply, ex -> 0);
+        Function<Object, Integer> mapper = Attempt.apply(this::throwableApply, ex -> 0);
         assertNotNull(mapper);
 
         Object result = mapper.apply("");
@@ -51,7 +51,7 @@ public class TryToTest {
 
     @Test(expected = RuntimeException.class)
     public void testSupply() {
-        Supplier<Integer> supplier = TryTo.supply(this::throwableSupply);
+        Supplier<Integer> supplier = Attempt.supply(this::throwableSupply);
         assertNotNull(supplier);
 
         supplier.get();
@@ -59,7 +59,7 @@ public class TryToTest {
 
     @Test
     public void testSupplyWithHandler() {
-        Supplier<Integer> supplier = TryTo.supply(this::throwableSupply, ex -> 0);
+        Supplier<Integer> supplier = Attempt.supply(this::throwableSupply, ex -> 0);
         assertNotNull(supplier);
 
         assertEquals(0, supplier.get().intValue());

@@ -10,12 +10,12 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * TryTo
+ * Try
  *
  * @author 之叶
  * @date   2019/10/06
  */
-public interface TryTo {
+public interface Attempt {
 
     static <T, R> Function<T, R> apply(CheckedFunction<T, R> function) {
         Objects.requireNonNull(function);
