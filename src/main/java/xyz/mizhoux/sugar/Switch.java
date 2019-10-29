@@ -35,14 +35,14 @@ public class Switch<T> {
     }
 
     /**
-     * 在指定的输入值上使用 Switch，返回用于消费的 Switch 实例
+     * 在指定的值上使用 Switch，返回用于消费的 Switch 实例
      *
-     * @param input 指定的输入值
-     * @param <I>   输入类型
+     * @param value 指定的值
+     * @param <V>   值的类型
      * @return 用于消费的 Switch 实例
      */
-    public static <I> ConsumptionSwitch<I> on(I input) {
-        return new ConsumptionSwitch<>(input);
+    public static <V> ConsumptionSwitch<V> on(V value) {
+        return new ConsumptionSwitch<>(value);
     }
 
     /**
@@ -53,7 +53,7 @@ public class Switch<T> {
      * @param <O>   输出类型
      * @return 用于消费的 Switch 实例
      */
-    public static <I, O> EvaluationSwitch<I, O> input(I input) {
+    public static <I, O> EvaluationSwitch<I, O> in(I input) {
         return new EvaluationSwitch<>(input);
     }
 
@@ -74,7 +74,7 @@ public class Switch<T> {
      * @return 当前 Switch 实例
      */
     @SuppressWarnings("unchecked")
-    protected Switch<T> in(T... values) {
+    protected Switch<T> isIn(T... values) {
         Objects.requireNonNull(values);
 
         return when(e -> {
@@ -133,8 +133,8 @@ public class Switch<T> {
 
         @Override
         @SafeVarargs
-        public final ConsumptionSwitch<T> in(T... values) {
-            super.in(values);
+        public final ConsumptionSwitch<T> isIn(T... values) {
+            super.isIn(values);
             return this;
         }
 
@@ -203,8 +203,8 @@ public class Switch<T> {
 
         @Override
         @SafeVarargs
-        public final EvaluationSwitch<I, O> in(I... values) {
-            super.in(values);
+        public final EvaluationSwitch<I, O> isIn(I... values) {
+            super.isIn(values);
             return this;
         }
 
@@ -222,7 +222,7 @@ public class Switch<T> {
          * @return 当前的 EvaluationSwitch 实例
          */
         @SuppressWarnings("unchecked")
-        public <R> EvaluationSwitch<I, R> output(Class<? extends R> type) {
+        public <R> EvaluationSwitch<I, R> out(Class<? extends R> type) {
             return (EvaluationSwitch<I, R>) this;
         }
 
